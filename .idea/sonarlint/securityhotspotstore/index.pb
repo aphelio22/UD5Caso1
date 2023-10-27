@@ -1,0 +1,25 @@
+
+k
+;app/src/main/java/com/example/ud5caso1/ComunidadAutonoma.kt,8\2\82420f2d8e69cdabde69064c72a7777c64854370
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+r
+Bapp/src/main/java/com/example/ud5caso1/ComunidadAutonomaAdapter.kt,7\0\70ef194677fd2414e4559d571d790b4e7d4a3f8d
+u
+Eapp/src/main/java/com/example/ud5caso1/ComunidadAutonomaViewHolder.kt,7\7\77d10a9ba3df1712aca949d1365120f6ed832efa
+f
+6app/src/main/java/com/example/ud5caso1/MainActivity.kt,6\8\683157bbf63189a1c46cb1cc5e7b2c97eba560b7
+s
+Capp/src/main/java/com/example/ud5caso1/ComunidadAutonomaProvider.kt,9\2\928bed243f14049199913cd67922f37f7e6bdee0
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+f
+6app/src/main/java/com/example/ud5caso1/InfoActivity.kt,9\e\9e7191ce6e1d4643e8947519aba22a6b3cd9b53f
+x
+Happ/src/androidTest/java/com/example/ud5caso1/ExampleInstrumentedTest.kt,6\9\69943c8198ddfc9b4dc953f0c031fc6a7e5b323a
+k
+;app/src/main/java/com/example/ud5caso1/ComunidadContract.kt,2\a\2ab00a2e639206fa52092cb34ee1e65d91a0bff8
+f
+6app/src/main/java/com/example/ud5caso1/ComunidadDAO.kt,b\7\b753c8e1717d8b8500f301fd03189ff3fd679cdb
+f
+6app/src/main/java/com/example/ud5caso1/DBOpenHelper.kt,0\4\04c35e4e46cca3003173027f3961567f79f4bf87

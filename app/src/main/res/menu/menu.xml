@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuOpciones"
+        android:icon="@drawable/baseline_density_medium_24"
+        android:title=""
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/borrar"
+                android:title="@string/borrar"
+                 />
+            <item
+                android:id="@+id/recargar"
+                android:title="@string/recargar"
+                />
+        </menu>
+    </item>
+</menu>

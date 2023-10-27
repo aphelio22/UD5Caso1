@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UD5Caso1</string>
+    <string name="comunidad_autonoma">Comunidad Autonoma</string>
+    <string name="borrar">BORRAR</string>
+    <string name="recargar">RECARGAR</string>
+    <string name="borrarRv">BORRAR</string>
+    <string name="editar">EDITAR</string>
+    <string name="cambiar">CAMBIAR</string>
+    <string name="cancelar">CANCELAR</string>
+</resources>
