@@ -10,13 +10,8 @@ class ComunidadDAO {
         lateinit var c: Cursor
         try{
             val db = DBOpenHelper.getInstance(context)!!.readableDatabase
-            // val sql = "SELECT * FROM comunidades;"
-            // c = db.rawQuery(sql, null)
-            val columnas = arrayOf(ComunidadContract.Companion.Entrada.COLUMNA_ID,
-                ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE,
-                ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN)
-            c = db.query(ComunidadContract.Companion.Entrada.NOMBRE_TABLA,
-                columnas,null,null,null,null,null)
+            val sql = "SELECT * FROM comunidades WHERE estado = 'activo';"
+            c = db.rawQuery(sql, null)
             res= mutableListOf()
             // Leer resultados del cursor e insertarlos en la lista
             while (c.moveToNext()) {
@@ -30,14 +25,17 @@ class ComunidadDAO {
         return res
     }
 
-    fun borrarDeBBDD(context: Context?, comunidad: ComunidadAutonoma){
+    fun borrarDeBBDD(context: Context?, nombre: String){
         val db = DBOpenHelper.getInstance(context)!!.writableDatabase
+        db.execSQL("UPDATE comunidades " + "SET estado='eliminado' " + "WHERE nombre='$nombre';")
+
+        /*
         val contentValues = ContentValues()
         contentValues.put(ComunidadContract.Companion.Entrada.COLUMNA_ID, comunidad.id)
         contentValues.put(ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE,comunidad.nombre)
         contentValues.put(ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN,comunidad.imagen)
         db.delete(ComunidadContract.Companion.Entrada.NOMBRE_TABLA, "id=?", arrayOf(comunidad.id.toString()))
-
+*/
         db.close()
     }
 
@@ -64,6 +62,30 @@ class ComunidadDAO {
 
         // Eliminar todos los registros de la tabla
         db.delete(ComunidadContract.Companion.Entrada.NOMBRE_TABLA, null, null)
+        db.close()
+    }
+
+    fun cambiarEstadoActivo(context: Context?){
+        val db = DBOpenHelper.getInstance(context)!!.writableDatabase
+        db.beginTransaction()
+        try {
+            db.execSQL("UPDATE comunidades SET estado='activo'")
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+        db.close()
+    }
+
+    fun cambiarEstadoEliminado(context: Context?){
+        val db = DBOpenHelper.getInstance(context)!!.writableDatabase
+        db.beginTransaction()
+        try {
+            db.execSQL("UPDATE comunidades SET estado='eliminado'")
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
         db.close()
     }
 }

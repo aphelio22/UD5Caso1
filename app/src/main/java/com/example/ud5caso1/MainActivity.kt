@@ -60,16 +60,25 @@ class MainActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.borrar -> {
-                listaComunidades.clear()
-                comunidadDAO.borrarTodoBBDD(this)
+                comunidadDAO.cambiarEstadoEliminado(this)
+                listaComunidades = comunidadDAO.cargarLista(this)
                 binding.rvComunidades.adapter?.notifyDataSetChanged()
+                binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
+                    onItemSelected(it)
+                }
                 true
             }
 
             R.id.recargar -> {
-                crearListaNueva()
-                binding.rvComunidades.adapter?.notifyDataSetChanged()
-                true
+
+                    comunidadDAO.cambiarEstadoActivo(this)
+                    listaComunidades = comunidadDAO.cargarLista(this)
+                    binding.rvComunidades.adapter?.notifyDataSetChanged()
+                    binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
+                    onItemSelected(it)
+                    }
+
+                    true
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -95,7 +104,7 @@ class MainActivity : AppCompatActivity(){
                             binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades){
                                 onItemSelected(it)
                             }
-                            comunidadDAO.borrarDeBBDD(this, comunidadAfectada)
+                            comunidadDAO.borrarDeBBDD(this, comunidadAfectada.nombre)
                         }.create()
                 alert.show()
             }
@@ -122,8 +131,11 @@ class MainActivity : AppCompatActivity(){
         Toast.makeText(this, "Yo soy de ${comunidadAutonoma.nombre}", Toast.LENGTH_SHORT).show()
     }
 
+    /*
     private fun crearListaNueva(){
         ComunidadAutonomaProvider.listaComunidadAutonoma.clear()
-        ComunidadAutonomaProvider.listaComunidadAutonoma.addAll(ComunidadAutonomaProvider.nuevaLista)
+        binding.rvComunidades.adapter?.notifyDataSetChanged()
     }
+    */
+
 }

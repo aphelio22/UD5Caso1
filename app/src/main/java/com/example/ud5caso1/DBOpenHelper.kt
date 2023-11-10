@@ -13,8 +13,9 @@ class DBOpenHelper private constructor(context: Context?) :
                     "CREATE TABLE ${ComunidadContract.Companion.Entrada.NOMBRE_TABLA}"
                             + "(${ComunidadContract.Companion.Entrada.COLUMNA_ID} int NOT NULL"
                             + ",${ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE} NVARCHAR(20) NOT NULL"
-                            + ",${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN} int NOT NULL);"
-                )
+                            + ",${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN} int NOT NULL" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} TEXT CHECK(${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} IN ('activo', 'eliminado')) DEFAULT 'activo');")
+
                 // Insertar datos en la tabla
                 inicializarBBDD(sqLiteDatabase)
             } catch (e: Exception) {

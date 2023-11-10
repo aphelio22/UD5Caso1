@@ -13,6 +13,7 @@ class ComunidadContract {
                 const val COLUMNA_ID = "id"
                 const val COLUMNA_NOMBRE = "nombre"
                 const val COLUMNA_IMAGEN = "imagen"
+                const val COLUMNA_ESTADO = "estado"
             }
         }
     }
