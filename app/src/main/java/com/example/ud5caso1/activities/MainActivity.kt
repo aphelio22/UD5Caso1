@@ -1,4 +1,4 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -12,15 +12,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ud5caso1.ComunidadAutonoma
+import com.example.ud5caso1.R
+import com.example.ud5caso1.adapter.ComunidadAutonomaAdapter
 import com.example.ud5caso1.databinding.ActivityMainBinding
+import com.example.ud5caso1.domain.ComunidadDAO
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     private var comunidadDAO: ComunidadDAO = ComunidadDAO()
     private lateinit var comunidadAfectada: ComunidadAutonoma
-    private lateinit var listaComunidades:MutableList<ComunidadAutonoma>
-    private lateinit var binding:ActivityMainBinding
-    private lateinit var intentLaunch:ActivityResultLauncher<Intent>
+    private lateinit var listaComunidades: MutableList<ComunidadAutonoma>
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var intentLaunch: ActivityResultLauncher<Intent>
     private var nombreComunidad = "Sin nombre"
     private var id: Int = 0
     private lateinit var adapter: ComunidadAutonomaAdapter
@@ -31,25 +35,26 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
         listaComunidades = comunidadDAO.cargarLista(this)
         binding.rvComunidades.layoutManager = LinearLayoutManager(this)
-        binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades){
-            comunidadAutonoma ->  onItemSelected(comunidadAutonoma)
-        }
+        binding.rvComunidades.adapter =
+            ComunidadAutonomaAdapter(listaComunidades) { comunidadAutonoma ->
+                onItemSelected(comunidadAutonoma)
+            }
 
         intentLaunch = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) {
-                result:ActivityResult ->
-                if(result.resultCode == Activity.RESULT_OK){
-                    nombreComunidad = result.data?.extras?.getString("nombre").toString()
-                    id = result.data?.extras?.getInt("id") as Int
-                    listaComunidades[id].nombre = nombreComunidad
-                    adapter = ComunidadAutonomaAdapter(listaComunidades){
-                            comunidadAutonoma ->  onItemSelected(comunidadAutonoma)
-                    }
-                    adapter.notifyItemChanged(id)
-                    comunidadDAO.actualizarBBDD(this, listaComunidades[id])
-                    binding.rvComunidades.adapter = adapter
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                nombreComunidad = result.data?.extras?.getString("nombre").toString()
+                id = result.data?.extras?.getInt("id") as Int
+                listaComunidades[id].nombre = nombreComunidad
+                adapter = ComunidadAutonomaAdapter(listaComunidades) { comunidadAutonoma ->
+                    onItemSelected(comunidadAutonoma)
                 }
+                adapter.notifyItemChanged(id)
+                comunidadDAO.actualizarBBDD(this, listaComunidades[id])
+                binding.rvComunidades.adapter = adapter
             }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -58,7 +63,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.borrar -> {
                 comunidadDAO.cambiarEstadoEliminado(this)
                 listaComunidades = comunidadDAO.cargarLista(this)
@@ -70,16 +75,15 @@ class MainActivity : AppCompatActivity(){
             }
 
             R.id.recargar -> {
-
-                    comunidadDAO.cambiarEstadoActivo(this)
-                    listaComunidades = comunidadDAO.cargarLista(this)
-                    binding.rvComunidades.adapter?.notifyDataSetChanged()
-                    binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
+                comunidadDAO.cambiarEstadoActivo(this)
+                listaComunidades = comunidadDAO.cargarLista(this)
+                binding.rvComunidades.adapter?.notifyDataSetChanged()
+                binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
                     onItemSelected(it)
-                    }
-
-                    true
+                }
+                true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -95,15 +99,18 @@ class MainActivity : AppCompatActivity(){
                         .setMessage(
                             "¿Estás seguro de que quieres eliminar ${comunidadAfectada.nombre}?"
                         )
-                        .setNeutralButton("Cerrar", null).setPositiveButton("Aceptar"){
-                            _, _ ->
-                           display("Se ha eliminado ${comunidadAfectada.nombre}")
+                        .setNeutralButton("Cerrar", null).setPositiveButton("Aceptar") { _, _ ->
+                            display("Se ha eliminado ${comunidadAfectada.nombre}")
                             listaComunidades.removeAt(item.groupId)
                             binding.rvComunidades.adapter?.notifyItemRemoved(item.groupId)
-                            binding.rvComunidades.adapter?.notifyItemRangeChanged(item.groupId, listaComunidades.size)
-                            binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades){
-                                onItemSelected(it)
-                            }
+                            binding.rvComunidades.adapter?.notifyItemRangeChanged(
+                                item.groupId,
+                                listaComunidades.size
+                            )
+                            binding.rvComunidades.adapter =
+                                ComunidadAutonomaAdapter(listaComunidades) {
+                                    onItemSelected(it)
+                                }
                             comunidadDAO.borrarDeBBDD(this, comunidadAfectada.nombre)
                         }.create()
                 alert.show()
@@ -117,9 +124,8 @@ class MainActivity : AppCompatActivity(){
                 intentLaunch.launch(miIntent)
             }
 
-            else-> return super.onContextItemSelected(item)
+            else -> return super.onContextItemSelected(item)
         }
-
         return true
     }
 
@@ -127,7 +133,7 @@ class MainActivity : AppCompatActivity(){
         Snackbar.make(binding.root, s, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun onItemSelected(comunidadAutonoma: ComunidadAutonoma){
+    private fun onItemSelected(comunidadAutonoma: ComunidadAutonoma) {
         Toast.makeText(this, "Yo soy de ${comunidadAutonoma.nombre}", Toast.LENGTH_SHORT).show()
     }
 

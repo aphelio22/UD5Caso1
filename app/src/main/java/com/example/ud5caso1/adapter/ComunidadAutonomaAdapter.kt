@@ -1,9 +1,10 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.adapter
 
 import android.view.LayoutInflater
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ud5caso1.ComunidadAutonoma
+import com.example.ud5caso1.R
 
 class ComunidadAutonomaAdapter(private val comunidadLista:List<ComunidadAutonoma>, private val onClickListener: (ComunidadAutonoma) -> Unit): RecyclerView.Adapter<ComunidadAutonomaViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComunidadAutonomaViewHolder {

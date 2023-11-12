@@ -1,8 +1,9 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.domain
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.ud5caso1.adapter.ComunidadAutonomaProvider
 import java.lang.Exception
 
 class DBOpenHelper private constructor(context: Context?) :

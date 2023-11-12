@@ -1,4 +1,7 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.adapter
+
+import com.example.ud5caso1.ComunidadAutonoma
+import com.example.ud5caso1.R
 
 class ComunidadAutonomaProvider {
 

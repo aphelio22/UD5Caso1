@@ -23,3 +23,5 @@ f
 6app/src/main/java/com/example/ud5caso1/ComunidadDAO.kt,b\7\b753c8e1717d8b8500f301fd03189ff3fd679cdb
 f
 6app/src/main/java/com/example/ud5caso1/DBOpenHelper.kt,0\4\04c35e4e46cca3003173027f3961567f79f4bf87
+@
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d

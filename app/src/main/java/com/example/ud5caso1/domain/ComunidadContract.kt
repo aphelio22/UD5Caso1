@@ -1,4 +1,4 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.domain
 
 import android.os.Build.VERSION
 import android.provider.BaseColumns

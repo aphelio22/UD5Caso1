@@ -1,4 +1,4 @@
-package com.example.ud5caso1
+package com.example.ud5caso1.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +8,8 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import com.example.ud5caso1.R
 import com.example.ud5caso1.databinding.ActivityInfoBinding
-import com.example.ud5caso1.databinding.ActivityMainBinding
 
 class InfoActivity : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityInfoBinding
