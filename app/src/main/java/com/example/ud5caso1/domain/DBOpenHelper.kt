@@ -12,9 +12,14 @@ class DBOpenHelper private constructor(context: Context?) :
             try {
                 sqLiteDatabase.execSQL(
                     "CREATE TABLE ${ComunidadContract.Companion.Entrada.NOMBRE_TABLA}"
-                            + "(${ComunidadContract.Companion.Entrada.COLUMNA_ID} int NOT NULL"
+                            + "(${ComunidadContract.Companion.Entrada.COLUMNA_ID} INTEGER NOT NULL"
                             + ",${ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE} NVARCHAR(20) NOT NULL"
-                            + ",${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN} int NOT NULL" +
+                            + ",${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN} INTEGER NOT NULL" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_HABITANTES} INTEGER NOT NULL" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_CAPITAL} NVARCHAR(100)" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_LATITUD} REAL NOT NULL" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_LONGITUD} REAL NOT NULL" +
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_ICONO} INTEGER NOT NULL" +
                             ",${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} TEXT CHECK(${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} IN ('activo', 'eliminado')) DEFAULT 'activo');")
 
                 // Insertar datos en la tabla
@@ -36,8 +41,13 @@ class DBOpenHelper private constructor(context: Context?) :
                     ("INSERT INTO ${ComunidadContract.Companion.Entrada.NOMBRE_TABLA}(" +
                             "${ComunidadContract.Companion.Entrada.COLUMNA_ID}," +
                             "${ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE}," +
-                            "${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN})" +
-                            " VALUES (${comunidad.id},'${comunidad.nombre}',${comunidad.imagen});")
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_HABITANTES}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_CAPITAL}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_LATITUD}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_LONGITUD}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_ICONO})" +
+                            " VALUES (${comunidad.id},'${comunidad.nombre}',${comunidad.imagen},${comunidad.habitantes},'${comunidad.capital}',${comunidad.latitud},${comunidad.longitud},${comunidad.icono});")
                 )
             }
         }

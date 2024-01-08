@@ -18,7 +18,8 @@ class ComunidadDAO {
             while (c.moveToNext()) {
                 val nueva = ComunidadAutonoma(
                     c.getInt(0), c.getString(1),
-                    c.getInt(2)
+                    c.getInt(2), c.getInt(3), c.getString(4),
+                    c.getDouble(5), c.getDouble(6), c.getInt(7)
                 )
                 res.add(nueva)
             }

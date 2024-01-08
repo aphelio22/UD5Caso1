@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ud5caso1.ComunidadAutonoma
 import com.example.ud5caso1.R
@@ -30,9 +32,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ComunidadAutonomaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Thread.sleep(2000)
+        splashScreen.setKeepOnScreenCondition{false}
         listaComunidades = comunidadDAO.cargarLista(this)
         binding.rvComunidades.layoutManager = LinearLayoutManager(this)
         binding.rvComunidades.adapter =
@@ -55,6 +60,12 @@ class MainActivity : AppCompatActivity() {
                 binding.rvComunidades.adapter = adapter
             }
         }
+
+        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,7 +145,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onItemSelected(comunidadAutonoma: ComunidadAutonoma) {
+        /*Activity de Google Maps habilitada, la activity de OpenStreetMaps es 'MapasActivity'.*/
         Toast.makeText(this, "Yo soy de ${comunidadAutonoma.nombre}", Toast.LENGTH_SHORT).show()
+        lateinit var miIntent: Intent
+        miIntent = Intent(this, MapsActivity::class.java)
+        miIntent.putExtra("nombre", comunidadAutonoma.nombre)
+        miIntent.putExtra("capital", comunidadAutonoma.capital)
+        miIntent.putExtra("latitud", comunidadAutonoma.latitud)
+        miIntent.putExtra("longitud", comunidadAutonoma.longitud)
+        startActivity(miIntent)
     }
 
     /*
