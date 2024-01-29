@@ -29,5 +29,7 @@ class ComunidadAutonomaViewHolder(view: View): ViewHolder(view), View.OnCreateCo
         menu!!.setHeaderTitle(comunidad.nombre)
         menu.add(this.adapterPosition, 0, 0, "ELIMINAR")
         menu.add(this.adapterPosition, 1, 1, "EDITAR")
+        menu.add(this.adapterPosition, 2, 2, "TOMAR FOTO")
+        menu.add(this.adapterPosition, 3, 3, "MOSTRAR FOTO")
     }
 }

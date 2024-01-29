@@ -19,6 +19,7 @@ class ComunidadContract {
                 const val COLUMNA_LATITUD = "latitud"
                 const val COLUMNA_LONGITUD = "longitud"
                 const val COLUMNA_ICONO = "icono"
+                const val COLUMNA_URI = "uri"
             }
         }
     }

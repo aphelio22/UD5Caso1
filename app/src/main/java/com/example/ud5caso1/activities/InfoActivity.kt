@@ -10,12 +10,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.example.ud5caso1.R
 import com.example.ud5caso1.databinding.ActivityInfoBinding
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class InfoActivity : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityInfoBinding
     private lateinit var btnCambiar: Button
     private lateinit var btnCancelar: Button
-    private lateinit var infoNombre: EditText
+    private lateinit var infoNombre: TextInputEditText
     private lateinit var infoImagen: ImageView
     private var id: Int = 0
 

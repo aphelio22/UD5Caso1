@@ -20,7 +20,8 @@ class DBOpenHelper private constructor(context: Context?) :
                             ",${ComunidadContract.Companion.Entrada.COLUMNA_LATITUD} REAL NOT NULL" +
                             ",${ComunidadContract.Companion.Entrada.COLUMNA_LONGITUD} REAL NOT NULL" +
                             ",${ComunidadContract.Companion.Entrada.COLUMNA_ICONO} INTEGER NOT NULL" +
-                            ",${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} TEXT CHECK(${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} IN ('activo', 'eliminado')) DEFAULT 'activo');")
+                            ",${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} TEXT CHECK(${ComunidadContract.Companion.Entrada.COLUMNA_ESTADO} IN ('activo', 'eliminado')) DEFAULT 'activo'" +
+                             ",${ComunidadContract.Companion.Entrada.COLUMNA_URI} NVARCHAR(100) NOT NULL);")
 
                 // Insertar datos en la tabla
                 inicializarBBDD(sqLiteDatabase)
@@ -46,8 +47,9 @@ class DBOpenHelper private constructor(context: Context?) :
                             "${ComunidadContract.Companion.Entrada.COLUMNA_CAPITAL}," +
                             "${ComunidadContract.Companion.Entrada.COLUMNA_LATITUD}," +
                             "${ComunidadContract.Companion.Entrada.COLUMNA_LONGITUD}," +
-                            "${ComunidadContract.Companion.Entrada.COLUMNA_ICONO})" +
-                            " VALUES (${comunidad.id},'${comunidad.nombre}',${comunidad.imagen},${comunidad.habitantes},'${comunidad.capital}',${comunidad.latitud},${comunidad.longitud},${comunidad.icono});")
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_ICONO}," +
+                            "${ComunidadContract.Companion.Entrada.COLUMNA_URI})" +
+                            " VALUES (${comunidad.id},'${comunidad.nombre}',${comunidad.imagen},${comunidad.habitantes},'${comunidad.capital}',${comunidad.latitud},${comunidad.longitud},${comunidad.icono},'${comunidad.uri}');")
                 )
             }
         }

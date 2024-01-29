@@ -35,3 +35,9 @@ r
 Bapp/src/main/java/com/example/ud5caso1/activities/MapasActivity.kt,6\0\6087f1755be9844083d79325bc1769f74b6592cc
 q
 Aapp/src/main/java/com/example/ud5caso1/activities/MapsActivity.kt,9\d\9dcb08e94456b345fb78ccd32071176598990260
+v
+Fapp/src/main/java/com/example/ud5caso1/activities/ComunidadDiffUtil.kt,1\6\162f857d7bee454b174cc80e04017a42609310c2
+s
+Capp/src/main/java/com/example/ud5caso1/activities/CameraActivity.kt,7\1\712940baf13fbb616ab2bdbc4a5141f348c11b93
+r
+Bapp/src/main/java/com/example/ud5caso1/activities/ActivityImage.kt,3\4\344c7f2007b056d75dd29518af81595747325b4f

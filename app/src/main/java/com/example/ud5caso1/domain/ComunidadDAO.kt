@@ -19,7 +19,8 @@ class ComunidadDAO {
                 val nueva = ComunidadAutonoma(
                     c.getInt(0), c.getString(1),
                     c.getInt(2), c.getInt(3), c.getString(4),
-                    c.getDouble(5), c.getDouble(6), c.getInt(7)
+                    c.getDouble(5), c.getDouble(6), c.getInt(7),
+                    c.getString(9)
                 )
                 res.add(nueva)
             }
@@ -45,21 +46,20 @@ class ComunidadDAO {
 
     fun actualizarBBDD(context: Context?, comunidad: ComunidadAutonoma) {
         val db = DBOpenHelper.getInstance(context)!!.writableDatabase
-
-        /*
+/*
         db.execSQL(
             "UPDATE frutas "
-                    + "SET nombre='${fruta.nombre}' " +
-                    "SET descripcion='${fruta.descripcion}'" +
-                    "SET imagen='${fruta.imagen}'" +
-                    "WHERE id=${fruta.id};"
+                    + "SET nombre='${comunidad.nombre}', imagen='${comunidad.imagen}, uri='${comunidad.uri}'" +
+                    "WHERE id=${comunidad.id};"
         )
         */
+
 
         val values = ContentValues()
         values.put(ComunidadContract.Companion.Entrada.COLUMNA_ID, comunidad.id)
         values.put(ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE, comunidad.nombre)
         values.put(ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN, comunidad.imagen)
+        values.put(ComunidadContract.Companion.Entrada.COLUMNA_URI, comunidad.uri)
         db.update(
             ComunidadContract.Companion.Entrada.NOMBRE_TABLA,
             values,
@@ -100,4 +100,47 @@ class ComunidadDAO {
         }
         db.close()
     }
+
+    fun getComunidadById(context: Context?, id: Int): ComunidadAutonoma {
+       lateinit var res: ComunidadAutonoma
+       lateinit var c: Cursor
+       try {
+           val db = DBOpenHelper.getInstance(context)!!.readableDatabase
+           val columnas = arrayOf(
+               ComunidadContract.Companion.Entrada.COLUMNA_ID,
+               ComunidadContract.Companion.Entrada.COLUMNA_NOMBRE,
+               ComunidadContract.Companion.Entrada.COLUMNA_IMAGEN,
+               ComunidadContract.Companion.Entrada.COLUMNA_ESTADO,
+               ComunidadContract.Companion.Entrada.COLUMNA_HABITANTES,
+               ComunidadContract.Companion.Entrada.COLUMNA_CAPITAL,
+               ComunidadContract.Companion.Entrada.COLUMNA_LATITUD,
+               ComunidadContract.Companion.Entrada.COLUMNA_LONGITUD,
+               ComunidadContract.Companion.Entrada.COLUMNA_ICONO,
+               ComunidadContract.Companion.Entrada.COLUMNA_URI,
+
+           )
+           val identificador = id.toString()
+           val valores = arrayOf(identificador)
+           c = db.query(
+               ComunidadContract.Companion.Entrada.NOMBRE_TABLA,
+               columnas,
+               "id=?",
+               valores,
+               null,
+               null,
+               null)
+           while (c.moveToNext()) {
+               res = ComunidadAutonoma(
+                   c.getInt(0), c.getString(1),
+                   c.getInt(2), c.getInt(3), c.getString(4),
+                   c.getDouble(5), c.getDouble(6), c.getInt(7),
+                   c.getString(9)
+               )
+           }
+       } finally {
+           c.close()
+       }
+        return res
+    }
 }
+

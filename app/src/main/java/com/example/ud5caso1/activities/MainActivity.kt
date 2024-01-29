@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
     private var comunidadDAO: ComunidadDAO = ComunidadDAO()
     private lateinit var comunidadAfectada: ComunidadAutonoma
-    private lateinit var listaComunidades: MutableList<ComunidadAutonoma>
+    private lateinit var listaComunidades: List<ComunidadAutonoma>
     private lateinit var binding: ActivityMainBinding
     private lateinit var intentLaunch: ActivityResultLauncher<Intent>
     private var nombreComunidad = "Sin nombre"
@@ -36,36 +36,40 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Thread.sleep(2000)
-        splashScreen.setKeepOnScreenCondition{false}
-        listaComunidades = comunidadDAO.cargarLista(this)
-        binding.rvComunidades.layoutManager = LinearLayoutManager(this)
-        binding.rvComunidades.adapter =
-            ComunidadAutonomaAdapter(listaComunidades) { comunidadAutonoma ->
-                onItemSelected(comunidadAutonoma)
-            }
-
-        intentLaunch = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                nombreComunidad = result.data?.extras?.getString("nombre").toString()
-                id = result.data?.extras?.getInt("id") as Int
-                listaComunidades[id].nombre = nombreComunidad
-                adapter = ComunidadAutonomaAdapter(listaComunidades) { comunidadAutonoma ->
-                    onItemSelected(comunidadAutonoma)
-                }
-                adapter.notifyItemChanged(id)
-                comunidadDAO.actualizarBBDD(this, listaComunidades[id])
-                binding.rvComunidades.adapter = adapter
-            }
-        }
 
         this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 finish()
             }
+
         })
+
+        Thread.sleep(2000)
+        splashScreen.setKeepOnScreenCondition{false}
+        listaComunidades = comunidadDAO.cargarLista(this)
+        binding.rvComunidades.layoutManager = LinearLayoutManager(this)
+        adapter = ComunidadAutonomaAdapter(listaComunidades) { comunidadAutonoma ->
+                onItemSelected(comunidadAutonoma)
+            }
+        
+        binding.rvComunidades.adapter = adapter
+        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
+        intentLaunch = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                binding.rvComunidades.adapter = adapter
+                nombreComunidad = result.data?.extras?.getString("nombre").toString()
+                id = result.data?.extras?.getInt("id") as Int
+                listaComunidades[id].nombre = nombreComunidad
+                adapter.updateList(listaComunidades)
+                comunidadDAO.actualizarBBDD(this, listaComunidades[id])
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -76,22 +80,18 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.borrar -> {
+                listaComunidades = listaComunidades.minus(listaComunidades)
                 comunidadDAO.cambiarEstadoEliminado(this)
                 listaComunidades = comunidadDAO.cargarLista(this)
-                binding.rvComunidades.adapter?.notifyDataSetChanged()
-                binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
-                    onItemSelected(it)
-                }
+                adapter.updateList(listaComunidades)
                 true
             }
 
             R.id.recargar -> {
+                listaComunidades = listaComunidades.plus(listaComunidades)
                 comunidadDAO.cambiarEstadoActivo(this)
                 listaComunidades = comunidadDAO.cargarLista(this)
-                binding.rvComunidades.adapter?.notifyDataSetChanged()
-                binding.rvComunidades.adapter = ComunidadAutonomaAdapter(listaComunidades) {
-                    onItemSelected(it)
-                }
+                adapter.updateList(listaComunidades)
                 true
             }
 
@@ -112,17 +112,9 @@ class MainActivity : AppCompatActivity() {
                         )
                         .setNeutralButton("Cerrar", null).setPositiveButton("Aceptar") { _, _ ->
                             display("Se ha eliminado ${comunidadAfectada.nombre}")
-                            listaComunidades.removeAt(item.groupId)
-                            binding.rvComunidades.adapter?.notifyItemRemoved(item.groupId)
-                            binding.rvComunidades.adapter?.notifyItemRangeChanged(
-                                item.groupId,
-                                listaComunidades.size
-                            )
-                            binding.rvComunidades.adapter =
-                                ComunidadAutonomaAdapter(listaComunidades) {
-                                    onItemSelected(it)
-                                }
+                            listaComunidades = listaComunidades.minus(comunidadAfectada)
                             comunidadDAO.borrarDeBBDD(this, comunidadAfectada.nombre)
+                            adapter.updateList(listaComunidades)
                         }.create()
                 alert.show()
             }
@@ -135,6 +127,18 @@ class MainActivity : AppCompatActivity() {
                 intentLaunch.launch(miIntent)
             }
 
+            2 -> {
+                val intent = Intent(this, CameraActivity::class.java)
+                intent.putExtra("comunidad", comunidadAfectada.nombre)
+                intent.putExtra("id", comunidadAfectada.id)
+                this.startActivity(intent)
+            }
+
+            3 -> {
+                val intent = Intent(this, ActivityImage::class.java)
+                intent.putExtra("id", comunidadAfectada.id)
+                this.startActivity(intent)
+            }
             else -> return super.onContextItemSelected(item)
         }
         return true
